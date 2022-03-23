@@ -207,14 +207,17 @@ export default function TasksList(props) {
         let filterTasks = totalTasks.filter(t => t.status === 0)
         setTasks(filterTasks)
     }
-    function sortByName() {
-        let sortTasks = [].concat(tasks)
-            .sort((a, b) => a.task_name > b.task_name ? 1 : -1)
-        let x = tasks.sort((a, b) => {
-            return a.status - b.status;
-        });
-
-        setTasks(x)
+    function sortTasks(field, type) {
+        let sortArr;
+        if (type === 1) {
+            sortArr = [].concat(tasks)
+                .sort((a, b) => a[field] > b[field] ? 1 : -1)
+        }
+        else {
+            sortArr = [].concat(tasks)
+                .sort((a, b) => b[field] > a[field] ? 1 : -1)
+        }
+        setTasks(sortArr)
     }
     return (
         <>
@@ -250,12 +253,21 @@ export default function TasksList(props) {
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Task Name <div>
-                                                    <button onClick={sortByName}>▲</button>
-                                                    <button>▼</button>
+                                                    <button onClick={() => sortTasks('task_name', 1)}>▲</button>
+                                                    <button onClick={() => sortTasks('task_name', 0)}>▼</button>
                                                 </div></th>
-                                                <th scope="col">Description</th>
-                                                <th scope="col">Date</th>
-                                                <th scope="col">Update status</th>
+                                                <th scope="col">Description <div>
+                                                    <button onClick={() => sortTasks('description', 1)}>▲</button>
+                                                    <button onClick={() => sortTasks('description', 0)}>▼</button>
+                                                </div></th>
+                                                <th scope="col">Date <div>
+                                                    <button onClick={() => sortTasks('status', 1)}>▲</button>
+                                                    <button onClick={() => sortTasks('status', 0)}>▼</button>
+                                                </div></th>
+                                                <th scope="col">Update status <div>
+                                                    <button onClick={() => sortTasks('status', 1)}>▲</button>
+                                                    <button onClick={() => sortTasks('status', 0)}>▼</button>
+                                                </div></th>
                                                 <th scope="col">Delete</th>
                                                 <th scope="col"><Button className="details" onClick={() => handleShow()}>Add new Task</Button></th>
                                             </tr>
