@@ -154,8 +154,9 @@ export default function TasksList(props) {
 
     }
     function updateTask(index) {
+        debugger
         if (taskTitle !== '') {
-            tasks[index].title = taskTitle
+            tasks[index].task_name = taskTitle
             document.getElementsByClassName('input').value = ''
             setTaskTitle('')
             var myHeaders = new Headers();
@@ -175,7 +176,28 @@ export default function TasksList(props) {
                 .catch(error => console.log('error', error));
         }
     }
-
+    function updateTaskDes(index) {
+        if (taskDescription !== '') {
+            tasks[index].description = taskDescription
+            document.getElementsByClassName('input').value = ''
+            setTaskDescription('')
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append('Access-Control-Allow-Origin', '*');
+            const requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: JSON.stringify(tasks[index]),
+            };
+            fetch("http://localhost:3020/tasks/updateTask", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result)
+                    readUserTasks()
+                })
+                .catch(error => console.log('error', error));
+        }
+    }
 
     function filterByStatus1() {
         let filterTasks = totalTasks.filter(t => t.status === 1)
@@ -193,8 +215,6 @@ export default function TasksList(props) {
         });
 
         setTasks(x)
-        console.log(tasks)
-        console.log(tasks)
     }
     return (
         <>
@@ -252,7 +272,7 @@ export default function TasksList(props) {
                                                     <td>{item.description}
                                                         <br></br>
                                                         <input className='input' onChange={(e) => setTaskDescription(e.target.value)}></input>
-                                                        <button className="btn btn-primary" onClick={() => updateTask(index)} title='update' >update</button>
+                                                        <button className="btn btn-primary" onClick={() => updateTaskDes(index)} title='update' >update</button>
                                                     </td>
                                                     <td>{item.due_Date}</td>
                                                     <td>

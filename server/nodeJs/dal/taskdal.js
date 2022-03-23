@@ -63,7 +63,7 @@ var updateStatusTask = (t) => {
 var updateTask = (t) => {
     obj = {}
     return Connection
-        .executeStatement(`update tbl_tasks set task_name = ${t.task_name}, description = ${t.description} where ID=${t.ID}`)
+        .executeStatement(`update tbl_tasks set task_name = '${t.task_name}', description = '${t.description}' where ID=${t.ID}`)
         .then((taskInfo) => {
             return taskInfo;
         }
